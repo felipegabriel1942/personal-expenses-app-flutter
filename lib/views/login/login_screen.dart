@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:personal_expenses_app/stores/login/login_store.dart';
+import 'package:personal_expenses_app/utils/app_routes.dart';
+import 'package:personal_expenses_app/views/login/components/login_text_form_field.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -6,6 +9,9 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+
+  final LoginStore loginStore = LoginStore();
+
   @override
   Widget build(BuildContext context) {
     final _availableHeight =
@@ -49,61 +55,15 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: _availableHeight * (_isLanscape ? 0.38 : 0.25),
                 child: Column(
                   children: [
-                    TextFormField(
-                      style: TextStyle(color: Colors.white),
-                      decoration: InputDecoration(
-                        prefixIcon: Icon(
-                          Icons.email,
-                          color: Colors.white,
-                        ),
-                        labelText: 'E-mail',
-                        labelStyle: TextStyle(
-                          color: Colors.white,
-                        ),
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Colors.white,
-                          ),
-                        ),
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Colors.white,
-                          ),
-                        ),
-                        border: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
+                    LoginTextFormField(
+                      label: 'E-mail',
+                      icon: Icons.mail,
+                      onChanged: loginStore.setEmail,
                     ),
-                    TextFormField(
-                      style: TextStyle(color: Colors.white),
-                      decoration: InputDecoration(
-                        prefixIcon: Icon(
-                          Icons.lock,
-                          color: Colors.white,
-                        ),
-                        labelText: 'Senha',
-                        labelStyle: TextStyle(
-                          color: Colors.white,
-                        ),
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Colors.white,
-                          ),
-                        ),
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Colors.white,
-                          ),
-                        ),
-                        border: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
+                    LoginTextFormField(
+                      label: 'Senha',
+                      icon: Icons.lock,
+                      onChanged: loginStore.setSenha,
                     ),
                   ],
                 ),
@@ -113,7 +73,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: _availableHeight * (_isLanscape ? 0.13 : 0.07),
                 child: RaisedButton(
                   elevation: 6,
-                  onPressed: () {},
+                  onPressed: () {
+                    print(loginStore.email);
+                    print(loginStore.senha);
+                  },
                   color: Colors.white,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5),
@@ -144,7 +107,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 2),
                         child: GestureDetector(
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.of(context).pushNamed(AppRoutes.CADASTRO);
+                          },
                           child: Text(
                             'Cadastre-se',
                             style: TextStyle(
