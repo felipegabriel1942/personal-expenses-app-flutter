@@ -12,7 +12,20 @@ abstract class _LoginStoreBase with Store {
   void setEmail(String value) => email = value;
 
   @observable
-  String senha;
+  String password;
 
-  void setSenha(String value) => senha = value;
+  @action
+  void setPassword(String value) => password = value;
+
+  @observable
+  String confirmPassword;
+
+  @action
+  void setConfirmPassword(String value) => confirmPassword = value;
+
+  @observable
+  bool isLoginMode = true;
+
+  @action
+  void setLoginMode() => isLoginMode = !isLoginMode;
 }

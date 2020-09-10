@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:personal_expenses_app/utils/app_routes.dart';
-import 'package:personal_expenses_app/views/cadastro/cadastro_screen.dart';
 import 'package:personal_expenses_app/views/login/login_screen.dart';
 
 void main() {
@@ -17,8 +16,7 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       routes: {
-        AppRoutes.LOGIN:(ctx) => LoginScreen(),
-        AppRoutes.CADASTRO: (ctx) => CadastroScreen()
+        AppRoutes.LOGIN:(ctx) => LoginScreen()
       },
     );
   }

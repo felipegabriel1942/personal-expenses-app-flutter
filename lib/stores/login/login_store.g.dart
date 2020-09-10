@@ -24,26 +24,105 @@ mixin _$LoginStore on _LoginStoreBase, Store {
     });
   }
 
-  final _$senhaAtom = Atom(name: '_LoginStoreBase.senha');
+  final _$passwordAtom = Atom(name: '_LoginStoreBase.password');
 
   @override
-  String get senha {
-    _$senhaAtom.reportRead();
-    return super.senha;
+  String get password {
+    _$passwordAtom.reportRead();
+    return super.password;
   }
 
   @override
-  set senha(String value) {
-    _$senhaAtom.reportWrite(value, super.senha, () {
-      super.senha = value;
+  set password(String value) {
+    _$passwordAtom.reportWrite(value, super.password, () {
+      super.password = value;
     });
+  }
+
+  final _$confirmPasswordAtom = Atom(name: '_LoginStoreBase.confirmPassword');
+
+  @override
+  String get confirmPassword {
+    _$confirmPasswordAtom.reportRead();
+    return super.confirmPassword;
+  }
+
+  @override
+  set confirmPassword(String value) {
+    _$confirmPasswordAtom.reportWrite(value, super.confirmPassword, () {
+      super.confirmPassword = value;
+    });
+  }
+
+  final _$isLoginModeAtom = Atom(name: '_LoginStoreBase.isLoginMode');
+
+  @override
+  bool get isLoginMode {
+    _$isLoginModeAtom.reportRead();
+    return super.isLoginMode;
+  }
+
+  @override
+  set isLoginMode(bool value) {
+    _$isLoginModeAtom.reportWrite(value, super.isLoginMode, () {
+      super.isLoginMode = value;
+    });
+  }
+
+  final _$_LoginStoreBaseActionController =
+      ActionController(name: '_LoginStoreBase');
+
+  @override
+  void setEmail(String value) {
+    final _$actionInfo = _$_LoginStoreBaseActionController.startAction(
+        name: '_LoginStoreBase.setEmail');
+    try {
+      return super.setEmail(value);
+    } finally {
+      _$_LoginStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setPassword(String value) {
+    final _$actionInfo = _$_LoginStoreBaseActionController.startAction(
+        name: '_LoginStoreBase.setPassword');
+    try {
+      return super.setPassword(value);
+    } finally {
+      _$_LoginStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setConfirmPassword(String value) {
+    final _$actionInfo = _$_LoginStoreBaseActionController.startAction(
+        name: '_LoginStoreBase.setConfirmPassword');
+    try {
+      return super.setConfirmPassword(value);
+    } finally {
+      _$_LoginStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setLoginMode() {
+    final _$actionInfo = _$_LoginStoreBaseActionController.startAction(
+        name: '_LoginStoreBase.setLoginMode');
+    try {
+      return super.setLoginMode();
+    } finally {
+      _$_LoginStoreBaseActionController.endAction(_$actionInfo);
+    }
   }
 
   @override
   String toString() {
     return '''
 email: ${email},
-senha: ${senha}
+password: ${password},
+confirmPassword: ${confirmPassword},
+isLoginMode: ${isLoginMode}
     ''';
   }
 }
