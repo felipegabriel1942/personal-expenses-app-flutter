@@ -73,7 +73,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         LoginTextFormField(
                           label: 'Confirmar senha',
                           icon: Icons.lock,
-                          onChanged: loginStore.setPassword,
+                          onChanged: loginStore.setConfirmPassword,
                         ),
                     ],
                   ),
@@ -88,6 +88,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     onPressed: () {
                       print(loginStore.email);
                       print(loginStore.password);
+                      print(loginStore.confirmPassword);
+                      print(loginStore.isSignUpFormValid);
+                      loginStore.signUpPressed();
                     },
                     color: Colors.white,
                     shape: RoundedRectangleBorder(
