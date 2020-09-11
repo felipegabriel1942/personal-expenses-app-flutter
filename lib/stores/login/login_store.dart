@@ -45,12 +45,41 @@ abstract class _LoginStoreBase with Store {
   @computed
   Function get signUpPressed => isSignUpFormValid ? _signUp : null;
 
+  @computed
+  Function get loginPressed => isEmailValid && isPasswordValid ? _login : null;
+
+  @computed
+  Function get pressAuthButton => isLoginMode ? loginPressed : signUpPressed;
+
+  @observable
+  String error;
+
+  @observable
+  bool isBusy = false;
+
+  @action
   Future<void> _signUp() async {
+    isBusy = true;
 
     try{
       await UserRepository().signup(email, password);
     } catch(e) {
+      error = e;
+    } finally {
+      isBusy = false;
+    }
+  }
 
+  @action
+  Future<void> _login() async {
+    isBusy = true;
+
+    try{
+      await UserRepository().login(email, password);
+    } catch(e) {
+      error = e;
+    } finally {
+      isBusy = false;
     }
   }
 }

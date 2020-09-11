@@ -1,7 +1,8 @@
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:mobx/mobx.dart';
 import 'package:personal_expenses_app/stores/login/login_store.dart';
-import 'package:personal_expenses_app/utils/app_routes.dart';
 import 'package:personal_expenses_app/views/login/components/login_text_form_field.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -10,7 +11,31 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final List<ReactionDisposer> _disposers = [];
   final LoginStore loginStore = LoginStore();
+
+  @override
+  void initState() {
+    super.initState();
+    _disposers.add(
+      autorun(
+        (_) {
+          if (loginStore.error != null) {
+            Flushbar(
+              message: loginStore.error,
+              duration: Duration(seconds: 3),
+            )..show(context);
+          }
+        },
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _disposers.forEach((disposer) => disposer());
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,6 +83,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ? loginStore.isLoginMode ? 0.38 : 0.50
                           : loginStore.isLoginMode ? 0.23 : 0.35),
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       LoginTextFormField(
                         label: 'E-mail',
@@ -79,36 +105,42 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 );
               }),
+              if(!_isLanscape)
+              const SizedBox(
+                height: 15,
+              ),
               Observer(builder: (_) {
                 return Container(
                   width: 200,
                   height: _availableHeight * (_isLanscape ? 0.13 : 0.07),
                   child: RaisedButton(
                     elevation: 6,
-                    onPressed: () {
-                      print(loginStore.email);
-                      print(loginStore.password);
-                      print(loginStore.confirmPassword);
-                      print(loginStore.isSignUpFormValid);
-                      loginStore.signUpPressed();
-                    },
+                    onPressed: loginStore.pressAuthButton,
                     color: Colors.white,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5),
                     ),
-                    child: Text(
-                      loginStore.isLoginMode ? 'LOGIN' : 'CADASTRAR',
-                      style: TextStyle(
-                        color: Colors.lightBlue,
-                      ),
-                    ),
+                    child: loginStore.isBusy
+                        ? Center(
+                            child: CircularProgressIndicator(),
+                          )
+                        : Text(
+                            loginStore.isLoginMode ? 'LOGIN' : 'CADASTRAR',
+                            style: TextStyle(
+                              color: Colors.lightBlue,
+                            ),
+                          ),
                   ),
                 );
               }),
               Observer(builder: (_) {
                 return Container(
+                  alignment: Alignment.bottomCenter,
                   padding: const EdgeInsets.all(11),
-                  height: _availableHeight * (_isLanscape ? 0.10 : 0.23),
+                  height: _availableHeight *
+                      (_isLanscape
+                          ? 0.10
+                          : loginStore.isLoginMode ? 0.26 : 0.14),
                   child: GestureDetector(
                     onTap: () {
                       loginStore.setLoginMode();
@@ -123,7 +155,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                  )
+                  ),
                 );
               }),
             ],

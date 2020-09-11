@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:personal_expenses_app/exceptions/firebase_exception.dart';
 import 'package:personal_expenses_app/utils/app_keys.dart';
 
 
@@ -14,7 +15,7 @@ class UserRepository {
   Future<void> _authenticate(
       String email, String password, String urlSegment) async {
     final _url =
-        'https://identitytoolkit.googleapis.com/v1/accounts:$urlSegment?key=$AppKeys.FIREBASE_KEY';
+        'https://identitytoolkit.googleapis.com/v1/accounts:$urlSegment?key=${AppKeys.FIREBASE_KEY}';
 
     final response = await http.post(_url,
         body: json.encode(
@@ -24,7 +25,7 @@ class UserRepository {
 
     if (responseBody['error'] != null) {
       print(responseBody['error']);
-      // throw FirebaseException(responseBody['error']['message']);
+      throw FirebaseException(responseBody['error']['message']).toString();
     } else {
       _token = responseBody['idToken'];
       _userId = responseBody['localId'];
