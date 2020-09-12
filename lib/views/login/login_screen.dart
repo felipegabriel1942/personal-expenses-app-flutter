@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobx/mobx.dart';
 import 'package:personal_expenses_app/stores/login/login_store.dart';
+import 'package:personal_expenses_app/utils/app_routes.dart';
 import 'package:personal_expenses_app/views/login/components/login_text_form_field.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -20,6 +21,11 @@ class _LoginScreenState extends State<LoginScreen> {
     _disposers.add(
       autorun(
         (_) {
+
+          if (loginStore.logged) {
+            Navigator.of(context).pushReplacementNamed(AppRoutes.HOME);
+          }
+
           if (loginStore.error != null) {
             Flushbar(
               message: loginStore.error,
@@ -33,7 +39,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void dispose() {
-    _disposers.forEach((disposer) => disposer());
+    _disposers.forEach(
+      (disposer) => disposer(),
+    );
     super.dispose();
   }
 
@@ -105,10 +113,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 );
               }),
-              if(!_isLanscape)
-              const SizedBox(
-                height: 15,
-              ),
+              if (!_isLanscape)
+                const SizedBox(
+                  height: 15,
+                ),
               Observer(builder: (_) {
                 return Container(
                   width: 200,
@@ -117,6 +125,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     elevation: 6,
                     onPressed: loginStore.pressAuthButton,
                     color: Colors.white,
+                    disabledColor: Colors.white70,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5),
                     ),

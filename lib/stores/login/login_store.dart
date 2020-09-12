@@ -57,12 +57,16 @@ abstract class _LoginStoreBase with Store {
   @observable
   bool isBusy = false;
 
+  @observable
+  bool logged = false;
+
   @action
   Future<void> _signUp() async {
     isBusy = true;
 
     try{
       await UserRepository().signup(email, password);
+      error = null;
     } catch(e) {
       error = e;
     } finally {
@@ -76,6 +80,8 @@ abstract class _LoginStoreBase with Store {
 
     try{
       await UserRepository().login(email, password);
+      logged = true;
+      error = null;
     } catch(e) {
       error = e;
     } finally {

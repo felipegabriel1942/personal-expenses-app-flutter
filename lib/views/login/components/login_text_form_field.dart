@@ -14,6 +14,7 @@ class LoginTextFormField extends StatelessWidget {
       child: TextFormField(
         style: TextStyle(color: Colors.white),
         onChanged: onChanged,
+        cursorColor: Colors.white,
         decoration: InputDecoration(
           prefixIcon: Icon(
             icon,

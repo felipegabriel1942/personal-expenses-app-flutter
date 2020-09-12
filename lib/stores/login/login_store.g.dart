@@ -149,6 +149,21 @@ mixin _$LoginStore on _LoginStoreBase, Store {
     });
   }
 
+  final _$loggedAtom = Atom(name: '_LoginStoreBase.logged');
+
+  @override
+  bool get logged {
+    _$loggedAtom.reportRead();
+    return super.logged;
+  }
+
+  @override
+  set logged(bool value) {
+    _$loggedAtom.reportWrite(value, super.logged, () {
+      super.logged = value;
+    });
+  }
+
   final _$_signUpAsyncAction = AsyncAction('_LoginStoreBase._signUp');
 
   @override
@@ -219,6 +234,7 @@ confirmPassword: ${confirmPassword},
 isLoginMode: ${isLoginMode},
 error: ${error},
 isBusy: ${isBusy},
+logged: ${logged},
 isPasswordEquals: ${isPasswordEquals},
 isEmailValid: ${isEmailValid},
 isPasswordValid: ${isPasswordValid},
