@@ -1,4 +1,9 @@
+import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:intl/intl.dart';
+import 'package:personal_expenses_app/stores/expenses/expenses_form_store.dart';
 
 class ExpensesFormScreen extends StatefulWidget {
   @override
@@ -6,6 +11,7 @@ class ExpensesFormScreen extends StatefulWidget {
 }
 
 class _ExpensesFormScreenState extends State<ExpensesFormScreen> {
+  final store = ExpensesFormStore();
 
   _showDatePicker() {
     showDatePicker(
@@ -13,15 +19,7 @@ class _ExpensesFormScreenState extends State<ExpensesFormScreen> {
       initialDate: DateTime.now(),
       firstDate: DateTime(2000),
       lastDate: DateTime(2050),
-    ).then((pickedDate) {
-      if (pickedDate == null) {
-        return;
-      }
-
-      setState(() {
-        print(pickedDate);
-      });
-    });
+    ).then(store.setDate);
   }
 
   @override
@@ -35,38 +33,103 @@ class _ExpensesFormScreenState extends State<ExpensesFormScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         child: Column(
           children: [
-            TextFormField(
-              decoration: InputDecoration(
-                labelText: 'Descrição',
+            Observer(builder: (_) {
+              return Container(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 10,
+                ),
+                child: TextFormField(
+                  decoration: InputDecoration(
+                    labelText: 'Descrição',
+                    errorText: store.descriptionFieldError,
+                    prefixIcon: Icon(
+                      Icons.edit,
+                    ),
+                  ),
+                  onChanged: store.setDescription,
+                ),
+              );
+            }),
+            Observer(builder: (_) {
+              return Container(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 10,
+                ),
+                child: TextFormField(
+                  decoration: InputDecoration(
+                    labelText: 'Valor',
+                    errorText: store.expenseValueFieldError,
+                    prefixIcon: Icon(
+                      Icons.monetization_on,
+                    ),
+                  ),
+                  keyboardType: TextInputType.number,
+                  onChanged: store.setExpenseValue,
+                ),
+              );
+            }),
+            Observer(builder: (_) {
+              final format = new DateFormat('dd/MM/yyyy');
+
+              return Container(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 10,
+                ),
+                child: TextFormField(
+                  controller: TextEditingController(
+                    text: store.dateValid ? format.format(store.date) : null,
+                  ),
+                  decoration: InputDecoration(
+                    labelText: 'Data',
+                    errorText: store.dateFieldError,
+                    prefixIcon: Icon(
+                      Icons.date_range,
+                    ),
+                  ),
+                  onTap: _showDatePicker,
+                  keyboardType: TextInputType.datetime,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                    DataInputFormatter()
+                  ],
+                ),
+              );
+            }),
+            Container(
+              padding: const EdgeInsets.symmetric(
+                vertical: 10,
+              ),
+              child: DropdownButtonFormField(
+                isExpanded: true,
+                decoration: InputDecoration(
+                  labelText: 'Categoria',
+                  prefixIcon: Icon(
+                    Icons.list,
+                  ),
+                ),
+                items: [
+                  DropdownMenuItem(
+                    child: Text(
+                      'Alimentação',
+                    ),
+                    value: 'alimentacao',
+                  )
+                ],
+                onChanged: store.setCategorie,
               ),
             ),
-            TextFormField(
-              decoration: InputDecoration(
-                labelText: 'Valor',
+            Container(
+              padding: const EdgeInsets.symmetric(
+                vertical: 0,
               ),
-              keyboardType: TextInputType.number,
-            ),
-            TextFormField(
-              decoration: InputDecoration(
-                labelText: 'Data'
-              ),
-              onTap: _showDatePicker,
-            ),
-            DropdownButtonFormField(
-              isExpanded: true,
-              decoration: InputDecoration(labelText: 'Categoria'),
-              items: [
-                DropdownMenuItem(
-                  child: Text('Alimentação'),
-                  value: 'alimentacao',
-                )
-              ],
-              onChanged: (String value) {},
-            ),
-            TextFormField(
-              maxLines: 3,
-              decoration: InputDecoration(
-                labelText: 'Observação',
+              child: TextFormField(
+                maxLines: 3,
+                decoration: InputDecoration(
+                  labelText: 'Observação',
+                  prefixIcon: Icon(
+                    Icons.text_fields,
+                  ),
+                ),
               ),
             )
           ],
@@ -78,7 +141,12 @@ class _ExpensesFormScreenState extends State<ExpensesFormScreen> {
           color: Colors.black,
         ),
         backgroundColor: Colors.amber[600],
-        onPressed: () {},
+        onPressed: () {
+          print(store.description);
+          print(store.expenseValue);
+          print(store.date);
+          print(store.categorie);
+        },
       ),
     );
   }
