@@ -9,48 +9,49 @@ part of 'expenses_form_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$ExpensesFormStore on _ExpensesFormStoreBase, Store {
-  Computed<bool> _$descriptionValidComputed;
+  Computed<bool> _$isDescriptionValidComputed;
 
   @override
-  bool get descriptionValid => (_$descriptionValidComputed ??= Computed<bool>(
-          () => super.descriptionValid,
-          name: '_ExpensesFormStoreBase.descriptionValid'))
+  bool get isDescriptionValid => (_$isDescriptionValidComputed ??=
+          Computed<bool>(() => super.isDescriptionValid,
+              name: '_ExpensesFormStoreBase.isDescriptionValid'))
       .value;
-  Computed<String> _$descriptionFieldErrorComputed;
+  Computed<bool> _$isExpenseValueValidComputed;
 
   @override
-  String get descriptionFieldError => (_$descriptionFieldErrorComputed ??=
-          Computed<String>(() => super.descriptionFieldError,
-              name: '_ExpensesFormStoreBase.descriptionFieldError'))
+  bool get isExpenseValueValid => (_$isExpenseValueValidComputed ??=
+          Computed<bool>(() => super.isExpenseValueValid,
+              name: '_ExpensesFormStoreBase.isExpenseValueValid'))
       .value;
-  Computed<bool> _$expenseValueValidComputed;
+  Computed<bool> _$isDateValidComputed;
 
   @override
-  bool get expenseValueValid => (_$expenseValueValidComputed ??= Computed<bool>(
-          () => super.expenseValueValid,
-          name: '_ExpensesFormStoreBase.expenseValueValid'))
-      .value;
-  Computed<String> _$expenseValueFieldErrorComputed;
-
-  @override
-  String get expenseValueFieldError => (_$expenseValueFieldErrorComputed ??=
-          Computed<String>(() => super.expenseValueFieldError,
-              name: '_ExpensesFormStoreBase.expenseValueFieldError'))
-      .value;
-  Computed<bool> _$dateValidComputed;
-
-  @override
-  bool get dateValid =>
-      (_$dateValidComputed ??= Computed<bool>(() => super.dateValid,
-              name: '_ExpensesFormStoreBase.dateValid'))
+  bool get isDateValid =>
+      (_$isDateValidComputed ??= Computed<bool>(() => super.isDateValid,
+              name: '_ExpensesFormStoreBase.isDateValid'))
           .value;
-  Computed<String> _$dateFieldErrorComputed;
+  Computed<bool> _$isFormValidComputed;
 
   @override
-  String get dateFieldError =>
-      (_$dateFieldErrorComputed ??= Computed<String>(() => super.dateFieldError,
-              name: '_ExpensesFormStoreBase.dateFieldError'))
+  bool get isFormValid =>
+      (_$isFormValidComputed ??= Computed<bool>(() => super.isFormValid,
+              name: '_ExpensesFormStoreBase.isFormValid'))
           .value;
+
+  final _$autovalidateAtom = Atom(name: '_ExpensesFormStoreBase.autovalidate');
+
+  @override
+  bool get autovalidate {
+    _$autovalidateAtom.reportRead();
+    return super.autovalidate;
+  }
+
+  @override
+  set autovalidate(bool value) {
+    _$autovalidateAtom.reportWrite(value, super.autovalidate, () {
+      super.autovalidate = value;
+    });
+  }
 
   final _$descriptionAtom = Atom(name: '_ExpensesFormStoreBase.description');
 
@@ -142,11 +143,33 @@ mixin _$ExpensesFormStore on _ExpensesFormStoreBase, Store {
   }
 
   @override
+  String descriptionValidation(String value) {
+    final _$actionInfo = _$_ExpensesFormStoreBaseActionController.startAction(
+        name: '_ExpensesFormStoreBase.descriptionValidation');
+    try {
+      return super.descriptionValidation(value);
+    } finally {
+      _$_ExpensesFormStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void setExpenseValue(String value) {
     final _$actionInfo = _$_ExpensesFormStoreBaseActionController.startAction(
         name: '_ExpensesFormStoreBase.setExpenseValue');
     try {
       return super.setExpenseValue(value);
+    } finally {
+      _$_ExpensesFormStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  String expenseValueValidation(String value) {
+    final _$actionInfo = _$_ExpensesFormStoreBaseActionController.startAction(
+        name: '_ExpensesFormStoreBase.expenseValueValidation');
+    try {
+      return super.expenseValueValidation(value);
     } finally {
       _$_ExpensesFormStoreBaseActionController.endAction(_$actionInfo);
     }
@@ -164,11 +187,33 @@ mixin _$ExpensesFormStore on _ExpensesFormStoreBase, Store {
   }
 
   @override
+  String dateValidation(String value) {
+    final _$actionInfo = _$_ExpensesFormStoreBaseActionController.startAction(
+        name: '_ExpensesFormStoreBase.dateValidation');
+    try {
+      return super.dateValidation(value);
+    } finally {
+      _$_ExpensesFormStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void setCategorie(String value) {
     final _$actionInfo = _$_ExpensesFormStoreBaseActionController.startAction(
         name: '_ExpensesFormStoreBase.setCategorie');
     try {
       return super.setCategorie(value);
+    } finally {
+      _$_ExpensesFormStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  String categorieValidation(String value) {
+    final _$actionInfo = _$_ExpensesFormStoreBaseActionController.startAction(
+        name: '_ExpensesFormStoreBase.categorieValidation');
+    try {
+      return super.categorieValidation(value);
     } finally {
       _$_ExpensesFormStoreBaseActionController.endAction(_$actionInfo);
     }
@@ -188,17 +233,16 @@ mixin _$ExpensesFormStore on _ExpensesFormStoreBase, Store {
   @override
   String toString() {
     return '''
+autovalidate: ${autovalidate},
 description: ${description},
 expenseValue: ${expenseValue},
 date: ${date},
 categorie: ${categorie},
 observation: ${observation},
-descriptionValid: ${descriptionValid},
-descriptionFieldError: ${descriptionFieldError},
-expenseValueValid: ${expenseValueValid},
-expenseValueFieldError: ${expenseValueFieldError},
-dateValid: ${dateValid},
-dateFieldError: ${dateFieldError}
+isDescriptionValid: ${isDescriptionValid},
+isExpenseValueValid: ${isExpenseValueValid},
+isDateValid: ${isDateValid},
+isFormValid: ${isFormValid}
     ''';
   }
 }

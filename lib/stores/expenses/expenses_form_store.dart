@@ -6,17 +6,25 @@ class ExpensesFormStore = _ExpensesFormStoreBase with _$ExpensesFormStore;
 abstract class _ExpensesFormStoreBase with Store {
   
   @observable
+  bool autovalidate = false;
+
+  void setAutovalidate() => autovalidate = !autovalidate;
+
+  @observable
   String description;
 
   @action
   void setDescription(String value) => description = value;
 
   @computed
-  bool get descriptionValid => description != null && description.isNotEmpty;
+  bool get isDescriptionValid => description != null && description.isNotEmpty;
 
-  @computed
-  String get descriptionFieldError {
-    return description == null || descriptionValid ? null : 'Campo obrigatório';
+  @action
+  String descriptionValidation(String value) {
+    if(!isDescriptionValid) {
+      return 'Campo obrigatório';
+    }
+    return null;
   }
 
   @observable
@@ -26,11 +34,14 @@ abstract class _ExpensesFormStoreBase with Store {
   void setExpenseValue(String value) => expenseValue = value;
 
   @computed
-  bool get expenseValueValid => expenseValue != null && expenseValue.isNotEmpty;
+  bool get isExpenseValueValid => expenseValue != null && expenseValue.isNotEmpty;
 
-  @computed
-  String get expenseValueFieldError {
-    return expenseValue == null || expenseValueValid ? null : 'Campo obrigatório';
+  @action
+  String expenseValueValidation(String value) {
+    if(!isExpenseValueValid) {
+      return 'Campo obrigatório';
+    }
+    return null;
   }
 
   @observable
@@ -40,11 +51,14 @@ abstract class _ExpensesFormStoreBase with Store {
   void setDate(DateTime value) => date = value;
 
   @computed
-  bool get dateValid => date != null;
+  bool get isDateValid => date != null;
 
-  @computed
-  String get dateFieldError {
-    return dateValid ? null : 'Campo obrigatório';
+  @action
+  String dateValidation(String value) {
+    if(!isDateValid) {
+      return 'Campo obrigatório';
+    }
+    return null;
   }
 
   @observable
@@ -53,10 +67,25 @@ abstract class _ExpensesFormStoreBase with Store {
   @action
   void setCategorie(String value) => categorie = value;
 
+  @action
+  String categorieValidation(String value) {
+
+    print(value);
+
+    if(value == null || value.isEmpty) {
+      return 'Campo obrigatório';
+    }
+    return null;
+  }
+
   @observable
   String observation;
 
   @action
   void setObservation(String value) => observation = value;
+
+  @computed
+  bool get isFormValid => isDescriptionValid && isExpenseValueValid && isDateValid;
+
 
 }
