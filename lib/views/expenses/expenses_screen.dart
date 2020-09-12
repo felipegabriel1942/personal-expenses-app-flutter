@@ -12,14 +12,15 @@ class ExpensesScreen extends StatelessWidget {
       ),
       drawer: AppDrawer(),
       floatingActionButton: FloatingActionButton(
-          child: Icon(
-            Icons.add,
-            color: Colors.black,
-          ),
-          backgroundColor: Colors.amber[600],
-          onPressed: () {
-            Navigator.of(context).pushNamed(AppRoutes.EXPENSES_FORM);
-          }),
+        child: Icon(
+          Icons.add,
+          color: Colors.black,
+        ),
+        backgroundColor: Colors.amber[600],
+        onPressed: () {
+          Navigator.of(context).pushNamed(AppRoutes.EXPENSES_FORM);
+        },
+      ),
     );
   }
 }
