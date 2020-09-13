@@ -9,7 +9,6 @@ class ExpensesRepository {
   final _baseUrl = '${AppKeys.BASE_API_URL}/expenses';
 
   Future<void> saveExpense(Expense newExpense) async {
-
     Map<String, dynamic> userData = await AppStore.getMap('userData');
     String token = userData['token'];
     String userId = userData['userId'];
@@ -22,7 +21,31 @@ class ExpensesRepository {
     if (response.statusCode >= 400) {
       print(response.statusCode);
     }
+  }
 
-    Future.value();
+  Future<List<Expense>> loadExpenses() async {
+    Map<String, dynamic> userData = await AppStore.getMap('userData');
+    String token = userData['token'];
+    String userId = userData['userId'];
+
+    final response = await http.get('$_baseUrl/$userId.json?auth=$token');
+    Map<String, dynamic> data = json.decode(response.body);
+
+    if (data == null) {
+      return [];
+    }
+
+    List<Expense> expensesList = [];
+    print(data);
+    try {
+      data.forEach((expenseId, expenseData) {
+        print(expenseData);
+        expensesList.add(Expense.fromMap(expenseData));
+      });
+    } catch (e) {
+      print(e);
+    }
+
+    return Future.value(expensesList);
   }
 }

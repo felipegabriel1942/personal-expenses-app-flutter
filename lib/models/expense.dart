@@ -1,10 +1,10 @@
 class Expense {
-  final String id;
-  final String description;
-  final double value;
-  final DateTime date;
-  final String categorie;
-  final String observation;
+  String id;
+  String description;
+  double value;
+  DateTime date;
+  String categorie;
+  String observation;
 
   Expense({
     this.id,
@@ -14,6 +14,14 @@ class Expense {
     this.categorie,
     this.observation,
   });
+
+  Expense.fromMap(Map<String, dynamic> map) {
+    this.description = map['description'];
+    this.value = map['value'];
+    this.date = DateTime.parse(map['date']);
+    this.categorie = map['categorie'];
+    this.observation = map['observation'];
+  }
 
   Map toMap(Expense expense) {
     Map<String, dynamic> map = {
