@@ -1,10 +1,11 @@
 import 'package:mobx/mobx.dart';
+import 'package:personal_expenses_app/models/Expense.dart';
+import 'package:personal_expenses_app/repositories/expenses_repository.dart';
 part 'expenses_form_store.g.dart';
 
 class ExpensesFormStore = _ExpensesFormStoreBase with _$ExpensesFormStore;
 
 abstract class _ExpensesFormStoreBase with Store {
-  
   @observable
   bool autovalidate = false;
 
@@ -21,7 +22,7 @@ abstract class _ExpensesFormStoreBase with Store {
 
   @action
   String descriptionValidation(String value) {
-    if(!isDescriptionValid) {
+    if (!isDescriptionValid) {
       return 'Campo obrigatório';
     }
     return null;
@@ -34,11 +35,12 @@ abstract class _ExpensesFormStoreBase with Store {
   void setExpenseValue(String value) => expenseValue = value;
 
   @computed
-  bool get isExpenseValueValid => expenseValue != null && expenseValue.isNotEmpty;
+  bool get isExpenseValueValid =>
+      expenseValue != null && expenseValue.isNotEmpty;
 
   @action
   String expenseValueValidation(String value) {
-    if(!isExpenseValueValid) {
+    if (!isExpenseValueValid) {
       return 'Campo obrigatório';
     }
     return null;
@@ -46,7 +48,7 @@ abstract class _ExpensesFormStoreBase with Store {
 
   @observable
   DateTime date = DateTime.now();
-  
+
   @action
   void setDate(DateTime value) => date = value;
 
@@ -55,7 +57,7 @@ abstract class _ExpensesFormStoreBase with Store {
 
   @action
   String dateValidation(String value) {
-    if(!isDateValid) {
+    if (!isDateValid) {
       return 'Campo obrigatório';
     }
     return null;
@@ -69,10 +71,7 @@ abstract class _ExpensesFormStoreBase with Store {
 
   @action
   String categorieValidation(String value) {
-
-    print(value);
-
-    if(value == null || value.isEmpty) {
+    if (value == null || value.isEmpty) {
       return 'Campo obrigatório';
     }
     return null;
@@ -81,11 +80,41 @@ abstract class _ExpensesFormStoreBase with Store {
   @observable
   String observation;
 
+  @observable
+  bool isBusy = false;
+
   @action
   void setObservation(String value) => observation = value;
 
   @computed
-  bool get isFormValid => isDescriptionValid && isExpenseValueValid && isDateValid;
+  bool get isFormValid =>
+      isDescriptionValid && isExpenseValueValid && isDateValid;
 
+  @computed
+  Function get saveButtonPressed => isFormValid ? _saveExpense : () {};
 
+  @observable
+  bool isFormSaved = false;
+  
+  Future<void> _saveExpense() async {
+
+    isBusy = true;
+
+    final newExpense = Expense(
+      description: description,
+      value: double.parse(expenseValue),
+      date: date,
+      categorie: categorie,
+      observation: observation
+    );
+    
+    try {
+      await ExpensesRepository().saveExpense(newExpense);
+      isFormSaved = true;
+    } catch (e) {
+      print(e);
+    }
+
+    isBusy = false;
+  }
 }

@@ -37,6 +37,13 @@ mixin _$ExpensesFormStore on _ExpensesFormStoreBase, Store {
       (_$isFormValidComputed ??= Computed<bool>(() => super.isFormValid,
               name: '_ExpensesFormStoreBase.isFormValid'))
           .value;
+  Computed<Function> _$saveButtonPressedComputed;
+
+  @override
+  Function get saveButtonPressed => (_$saveButtonPressedComputed ??=
+          Computed<Function>(() => super.saveButtonPressed,
+              name: '_ExpensesFormStoreBase.saveButtonPressed'))
+      .value;
 
   final _$autovalidateAtom = Atom(name: '_ExpensesFormStoreBase.autovalidate');
 
@@ -125,6 +132,36 @@ mixin _$ExpensesFormStore on _ExpensesFormStoreBase, Store {
   set observation(String value) {
     _$observationAtom.reportWrite(value, super.observation, () {
       super.observation = value;
+    });
+  }
+
+  final _$isBusyAtom = Atom(name: '_ExpensesFormStoreBase.isBusy');
+
+  @override
+  bool get isBusy {
+    _$isBusyAtom.reportRead();
+    return super.isBusy;
+  }
+
+  @override
+  set isBusy(bool value) {
+    _$isBusyAtom.reportWrite(value, super.isBusy, () {
+      super.isBusy = value;
+    });
+  }
+
+  final _$isFormSavedAtom = Atom(name: '_ExpensesFormStoreBase.isFormSaved');
+
+  @override
+  bool get isFormSaved {
+    _$isFormSavedAtom.reportRead();
+    return super.isFormSaved;
+  }
+
+  @override
+  set isFormSaved(bool value) {
+    _$isFormSavedAtom.reportWrite(value, super.isFormSaved, () {
+      super.isFormSaved = value;
     });
   }
 
@@ -239,10 +276,13 @@ expenseValue: ${expenseValue},
 date: ${date},
 categorie: ${categorie},
 observation: ${observation},
+isBusy: ${isBusy},
+isFormSaved: ${isFormSaved},
 isDescriptionValid: ${isDescriptionValid},
 isExpenseValueValid: ${isExpenseValueValid},
 isDateValid: ${isDateValid},
-isFormValid: ${isFormValid}
+isFormValid: ${isFormValid},
+saveButtonPressed: ${saveButtonPressed}
     ''';
   }
 }
