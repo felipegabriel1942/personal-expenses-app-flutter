@@ -1,14 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:personal_expenses_app/components/app_drawer.dart';
+import 'package:personal_expenses_app/repositories/expenses_repository.dart';
+import 'package:personal_expenses_app/stores/expenses/expenses_store.dart';
 import 'package:personal_expenses_app/utils/app_routes.dart';
 
 class ExpensesScreen extends StatelessWidget {
+  final store = ExpensesStore();
+  final expensesRepository = ExpensesRepository();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Despesas'),
         backgroundColor: Colors.red[400],
+      ),
+      body: Container(
+        child: FutureBuilder(
+          future: store.loadExpenses(),
+          builder: (context, snapshot) {
+            if (store.isBusy) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            } else {
+              return ListView.builder(
+                itemCount: store.expensesList.length,
+                itemBuilder: (context, index) {
+                  return Text(
+                    store.expensesList[index].description,
+                  );
+                },
+              );
+            }
+          },
+        ),
       ),
       drawer: AppDrawer(),
       floatingActionButton: FloatingActionButton(
