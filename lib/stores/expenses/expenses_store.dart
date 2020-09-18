@@ -18,7 +18,13 @@ abstract class _ExpensesStoreBase with Store {
 
       await ExpensesRepository().loadExpenses().then((value) {
         value.forEach((element) {
-          final expense = Expense(description: element.description);
+          final expense = Expense(
+            description: element.description,
+            date: element.date,
+            value: element.value,
+            categorie: element.categorie,
+            observation: element.observation);
+
           expensesList.add(expense);
         });
       });

@@ -78,14 +78,8 @@ class _ExpensesFormScreenState extends State<ExpensesFormScreen> {
                             child: TextFormField(
                               autovalidate: store.autovalidate,
                               decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(10),
-                                  ),
-                                ),
+                                
                                 labelText: 'Descrição',
-                                filled: true,
-                                fillColor: Colors.white,
                                 prefixIcon: Icon(
                                   Icons.edit,
                                 ),
@@ -105,12 +99,6 @@ class _ExpensesFormScreenState extends State<ExpensesFormScreen> {
                             autovalidate: store.autovalidate,
                             decoration: InputDecoration(
                               labelText: 'Valor',
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(10),
-                                ),
-                              ),
-                              filled: true,
                               fillColor: Colors.white,
                               prefixIcon: Icon(
                                 Icons.monetization_on,
@@ -140,12 +128,6 @@ class _ExpensesFormScreenState extends State<ExpensesFormScreen> {
                             ),
                             decoration: InputDecoration(
                               labelText: 'Data',
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(10),
-                                ),
-                              ),
-                              filled: true,
                               fillColor: Colors.white,
                               prefixIcon: Icon(
                                 Icons.date_range,
@@ -164,19 +146,13 @@ class _ExpensesFormScreenState extends State<ExpensesFormScreen> {
                       Observer(builder: (_) {
                         return Container(
                           padding: const EdgeInsets.symmetric(
-                            vertical: 10,
+                            vertical: 6,
                           ),
                           child: DropdownButtonFormField(
                             isExpanded: true,
                             autovalidate: store.autovalidate,
                             decoration: InputDecoration(
                               labelText: 'Categoria',
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(10),
-                                ),
-                              ),
-                              filled: true,
                               fillColor: Colors.white,
                               prefixIcon: Icon(
                                 Icons.list,
@@ -202,18 +178,12 @@ class _ExpensesFormScreenState extends State<ExpensesFormScreen> {
                         child: TextFormField(
                           maxLines: 3,
                           decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(10),
-                              ),
-                            ),
-                            labelText: 'Observação',
-                            filled: true,
                             fillColor: Colors.white,
                             prefixIcon: Icon(
                               Icons.text_fields,
                             ),
                           ),
+                          onChanged: store.setObservation,
                         ),
                       ),
                     ],

@@ -3,6 +3,7 @@ import 'package:personal_expenses_app/components/app_drawer.dart';
 import 'package:personal_expenses_app/repositories/expenses_repository.dart';
 import 'package:personal_expenses_app/stores/expenses/expenses_store.dart';
 import 'package:personal_expenses_app/utils/app_routes.dart';
+import 'package:personal_expenses_app/views/expenses/components/expense_list_item.dart';
 
 class ExpensesScreen extends StatelessWidget {
   final store = ExpensesStore();
@@ -27,8 +28,8 @@ class ExpensesScreen extends StatelessWidget {
               return ListView.builder(
                 itemCount: store.expensesList.length,
                 itemBuilder: (context, index) {
-                  return Text(
-                    store.expensesList[index].description,
+                  return ExpenseListItem(
+                    expense: store.expensesList[index],
                   );
                 },
               );

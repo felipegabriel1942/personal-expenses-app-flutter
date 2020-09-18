@@ -36,11 +36,14 @@ class ExpensesRepository {
     }
 
     List<Expense> expensesList = [];
-    print(data);
+
     try {
       data.forEach((expenseId, expenseData) {
-        print(expenseData);
-        expensesList.add(Expense.fromMap(expenseData));
+        expensesList.add(
+          Expense.fromMap(
+            expenseData,
+          ),
+        );
       });
     } catch (e) {
       print(e);
