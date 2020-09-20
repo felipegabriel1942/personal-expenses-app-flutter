@@ -29,6 +29,9 @@ class ExpenseListItem extends StatelessWidget {
             ),
           ),
         ),
+        trailing: IconButton(
+          icon: Icon(Icons.delete, color: Colors.red,),
+          onPressed: () {},),
         title: Text(expense.description),
         subtitle: Text(
           '${expense.categorie} | ${DateFormat('dd/MM/yyyy hh:mm').format(expense.date)}',

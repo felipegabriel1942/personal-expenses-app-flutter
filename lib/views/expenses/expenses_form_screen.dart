@@ -78,7 +78,6 @@ class _ExpensesFormScreenState extends State<ExpensesFormScreen> {
                             child: TextFormField(
                               autovalidate: store.autovalidate,
                               decoration: InputDecoration(
-                                
                                 labelText: 'Descrição',
                                 prefixIcon: Icon(
                                   Icons.edit,
@@ -90,87 +89,93 @@ class _ExpensesFormScreenState extends State<ExpensesFormScreen> {
                           );
                         },
                       ),
-                      Observer(builder: (_) {
-                        return Container(
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 10,
-                          ),
-                          child: TextFormField(
-                            autovalidate: store.autovalidate,
-                            decoration: InputDecoration(
-                              labelText: 'Valor',
-                              fillColor: Colors.white,
-                              prefixIcon: Icon(
-                                Icons.monetization_on,
-                              ),
+                      Observer(
+                        builder: (_) {
+                          return Container(
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 10,
                             ),
-                            keyboardType: TextInputType.number,
-                            validator: store.expenseValueValidation,
-                            onChanged: store.setExpenseValue,
-                          ),
-                        );
-                      }),
-                      Observer(builder: (_) {
-                        final format = new DateFormat(
-                          'dd/MM/yyyy',
-                        );
-
-                        return Container(
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 10,
-                          ),
-                          child: TextFormField(
-                            autovalidate: store.autovalidate,
-                            controller: TextEditingController(
-                              text: store.isDateValid
-                                  ? format.format(store.date)
-                                  : null,
-                            ),
-                            decoration: InputDecoration(
-                              labelText: 'Data',
-                              fillColor: Colors.white,
-                              prefixIcon: Icon(
-                                Icons.date_range,
-                              ),
-                            ),
-                            onTap: _showDatePicker,
-                            keyboardType: TextInputType.datetime,
-                            validator: store.dateValidation,
-                            inputFormatters: [
-                              FilteringTextInputFormatter.digitsOnly,
-                              DataInputFormatter()
-                            ],
-                          ),
-                        );
-                      }),
-                      Observer(builder: (_) {
-                        return Container(
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 6,
-                          ),
-                          child: DropdownButtonFormField(
-                            isExpanded: true,
-                            autovalidate: store.autovalidate,
-                            decoration: InputDecoration(
-                              labelText: 'Categoria',
-                              fillColor: Colors.white,
-                              prefixIcon: Icon(
-                                Icons.list,
-                              ),
-                            ),
-                            validator: store.categorieValidation,
-                            items: [
-                              DropdownMenuItem(
-                                child: Text(
-                                  'Alimentação',
+                            child: TextFormField(
+                              autovalidate: store.autovalidate,
+                              decoration: InputDecoration(
+                                labelText: 'Valor',
+                                fillColor: Colors.white,
+                                prefixIcon: Icon(
+                                  Icons.monetization_on,
                                 ),
-                                value: 'alimentacao',
-                              )
-                            ],
-                            onChanged: store.setCategorie,
-                          ),
-                        );
-                      }),
+                              ),
+                              keyboardType: TextInputType.number,
+                              validator: store.expenseValueValidation,
+                              onChanged: store.setExpenseValue,
+                            ),
+                          );
+                        },
+                      ),
+                      Observer(
+                        builder: (_) {
+                          final format = new DateFormat(
+                            'dd/MM/yyyy',
+                          );
+
+                          return Container(
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 10,
+                            ),
+                            child: TextFormField(
+                              autovalidate: store.autovalidate,
+                              controller: TextEditingController(
+                                text: store.isDateValid
+                                    ? format.format(store.date)
+                                    : null,
+                              ),
+                              decoration: InputDecoration(
+                                labelText: 'Data',
+                                fillColor: Colors.white,
+                                prefixIcon: Icon(
+                                  Icons.date_range,
+                                ),
+                              ),
+                              onTap: _showDatePicker,
+                              keyboardType: TextInputType.datetime,
+                              validator: store.dateValidation,
+                              inputFormatters: [
+                                FilteringTextInputFormatter.digitsOnly,
+                                DataInputFormatter()
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                      Observer(
+                        builder: (_) {
+                          return Container(
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 6,
+                            ),
+                            child: DropdownButtonFormField(
+                              isExpanded: true,
+                              autovalidate: store.autovalidate,
+                              decoration: InputDecoration(
+                                labelText: 'Categoria',
+                                fillColor: Colors.white,
+                                prefixIcon: Icon(
+                                  Icons.list,
+                                ),
+                              ),
+                              validator: store.categorieValidation,
+                              items: [
+                                DropdownMenuItem(
+                                  child: Text(
+                                    'Alimentação',
+                                  ),
+                                  value: 'alimentacao',
+                                )
+                              ],
+                              onChanged: store.setCategorie,
+                            ),
+                          );
+                        },
+                      ),
                       Container(
                         padding: const EdgeInsets.symmetric(
                           vertical: 10,
@@ -178,7 +183,7 @@ class _ExpensesFormScreenState extends State<ExpensesFormScreen> {
                         child: TextFormField(
                           maxLines: 3,
                           decoration: InputDecoration(
-                            fillColor: Colors.white,
+                            labelText: 'Observação',
                             prefixIcon: Icon(
                               Icons.text_fields,
                             ),

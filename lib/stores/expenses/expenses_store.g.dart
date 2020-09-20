@@ -24,6 +24,21 @@ mixin _$ExpensesStore on _ExpensesStoreBase, Store {
     });
   }
 
+  final _$totalValueAtom = Atom(name: '_ExpensesStoreBase.totalValue');
+
+  @override
+  double get totalValue {
+    _$totalValueAtom.reportRead();
+    return super.totalValue;
+  }
+
+  @override
+  set totalValue(double value) {
+    _$totalValueAtom.reportWrite(value, super.totalValue, () {
+      super.totalValue = value;
+    });
+  }
+
   final _$isBusyAtom = Atom(name: '_ExpensesStoreBase.isBusy');
 
   @override
@@ -39,11 +54,28 @@ mixin _$ExpensesStore on _ExpensesStoreBase, Store {
     });
   }
 
+  final _$selectedMonthAtom = Atom(name: '_ExpensesStoreBase.selectedMonth');
+
+  @override
+  DateTime get selectedMonth {
+    _$selectedMonthAtom.reportRead();
+    return super.selectedMonth;
+  }
+
+  @override
+  set selectedMonth(DateTime value) {
+    _$selectedMonthAtom.reportWrite(value, super.selectedMonth, () {
+      super.selectedMonth = value;
+    });
+  }
+
   @override
   String toString() {
     return '''
 expensesList: ${expensesList},
-isBusy: ${isBusy}
+totalValue: ${totalValue},
+isBusy: ${isBusy},
+selectedMonth: ${selectedMonth}
     ''';
   }
 }

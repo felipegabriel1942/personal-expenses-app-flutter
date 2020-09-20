@@ -10,7 +10,13 @@ abstract class _ExpensesStoreBase with Store {
   List<Expense> expensesList = [];
 
   @observable
+  double totalValue = 0;
+
+  @observable
   bool isBusy = false;
+
+  @observable
+  DateTime selectedMonth = DateTime.now();
 
   Future<void> loadExpenses() async {
     try {
@@ -25,6 +31,7 @@ abstract class _ExpensesStoreBase with Store {
             categorie: element.categorie,
             observation: element.observation);
 
+          totalValue += expense.value;
           expensesList.add(expense);
         });
       });
