@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:personal_expenses_app/components/app_drawer.dart';
+import 'package:personal_expenses_app/components/currency_text.dart';
 import 'package:personal_expenses_app/components/custom_month_picker.dart';
 import 'package:personal_expenses_app/repositories/expenses_repository.dart';
 import 'package:personal_expenses_app/stores/expenses/expenses_store.dart';
@@ -18,6 +19,12 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
   final expensesRepository = ExpensesRepository();
 
   @override
+  void initState() {
+    super.initState();
+    store.loadExpenses();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final _availableHeight = MediaQuery.of(context).size.height -
         MediaQuery.of(context).padding.top -
@@ -30,69 +37,93 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
       appBar: AppBar(
         title: Text('Despesas'),
         backgroundColor: Colors.red[400],
+        elevation: 0,
       ),
-      body: Column(
-        children: [
-          Container(
-            height: _availableHeight * 0.20,
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Observer(builder: (_) {
-                  return CustomMonthPicker(
-                    onDecrease: store.isBusy ? null : store.decreaseMonth,
-                    onIncrease: store.isBusy ? null : store.increaseMonth,
-                    selectedMonth: store.selectedMonth,
-                  );
-                }),
-                Observer(
-                  builder: (_) {
-                    return Container(
-                      width: double.infinity,
-                      height: 70,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 10,
-                        vertical: 15,
-                      ),
-                      child: store.isBusy
-                          ? Center(
-                              child: CircularProgressIndicator(),
-                            )
-                          : Text(
-                              'R\$ ${store.totalValue.toStringAsFixed(2)}',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.black,
-                              ),
-                            ),
-                    );
-                  },
-                ),
-              ],
+      backgroundColor: Colors.red[400],
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              height: _availableHeight * 0.08,
+              child: Observer(builder: (_) {
+                return CustomMonthPicker(
+                  onDecrease: store.isBusy ? null : store.decreaseMonth,
+                  onIncrease: store.isBusy ? null : store.increaseMonth,
+                  selectedMonth: store.selectedMonth,
+                );
+              }),
             ),
-          ),
-          Observer(builder: (_) {
-            return Container(
-              height: _availableHeight * 0.75,
-              padding: const EdgeInsets.only(bottom: 15),
-              child: store.isBusy
-                  ? Center(
-                      child: CircularProgressIndicator(),
-                    )
-                  : ListView.builder(
-                      itemCount: store.expensesList.length,
-                      itemBuilder: (_, index) {
-                        return ExpenseListItem(
-                          expense: store.expensesList[index],
-                        );
-                      },
-                    ),
-            );
-          }),
-        ],
+            // Observer(
+            //   builder: (_) {
+            //     return Container(
+            //       decoration: BoxDecoration(color: Colors.white),
+            //       width: double.infinity,
+            //       height: 60,
+            //       padding: const EdgeInsets.symmetric(
+            //         horizontal: 10,
+            //         vertical: 15,
+            //       ),
+            //       child: store.isBusy
+            //           ? Center(
+            //               child: CircularProgressIndicator(),
+            //             )
+            //           : CurrencyText(
+            //               value: store.totalValue,
+            //               fontSize: 18,
+            //               color: Colors.amber,
+            //             ),
+            //     );
+            //   },
+            // ),
+            Observer(
+              builder: (_) {
+                return Container(
+                  height: _availableHeight * 0.85,
+                  padding: const EdgeInsets.only(
+                    top: 15,
+                    bottom: 15,
+                  ),
+                  decoration: BoxDecoration(color: Colors.white),
+                  child: store.isBusy
+                      ? Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : ListView.builder(
+                          itemCount: store.expensesList.length,
+                          itemBuilder: (_, index) {
+                            return ExpenseListItem(
+                              expense: store.expensesList[index],
+                            );
+                          },
+                        ),
+                );
+              },
+            ),
+            Observer(
+              builder: (_) {
+                return Container(
+                  // decoration: BoxDecoration(color: Colors.white),
+                  // width: double.infinity,
+                  height: _availableHeight * 0.07,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 15,
+                  ),
+                  alignment: Alignment.centerLeft,
+                  child: store.isBusy
+                      ? Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : CurrencyText(
+                          value: store.totalValue,
+                          fontSize: 16,
+                          color: Colors.white,
+                          prefixText: 'Total:',
+                        ),
+                );
+              },
+            ),
+          ],
+        ),
       ),
       drawer: AppDrawer(),
       floatingActionButton: FloatingActionButton(

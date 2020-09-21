@@ -12,52 +12,51 @@ class CustomMonthPicker extends StatelessWidget {
   });
 
   _buildMonthLabel(DateTime date) {
-
-    if(date.month == 1) {
+    if (date.month == 1) {
       return 'Janeiro/${date.year}';
     }
 
-    if(date.month == 2) {
+    if (date.month == 2) {
       return 'Fevereiro/${date.year}';
     }
 
-    if(date.month == 3) {
+    if (date.month == 3) {
       return 'Março/${date.year}';
     }
 
-    if(date.month == 4) {
+    if (date.month == 4) {
       return 'Abril/${date.year}';
     }
 
-    if(date.month == 5) {
+    if (date.month == 5) {
       return 'Maio/${date.year}';
     }
 
-    if(date.month == 6) {
+    if (date.month == 6) {
       return 'Junho/${date.year}';
     }
 
-    if(date.month == 7) {
+    if (date.month == 7) {
       return 'Julho/${date.year}';
     }
 
-    if(date.month == 8) {
+    if (date.month == 8) {
       return 'Agosto/${date.year}';
     }
 
-    if(date.month == 9) {
+    if (date.month == 9) {
       return 'Setembro/${date.year}';
-    }   
+    }
 
-    if(date.month == 10) {
+    if (date.month == 10) {
       return 'Outubro/${date.year}';
     }
 
-    if(date.month == 11) {
+    if (date.month == 11) {
       return 'Novembro/${date.year}';
     }
 
-    if(date.month == 12) {
+    if (date.month == 12) {
       return 'Dezembro/${date.year}';
     }
   }
@@ -71,20 +70,25 @@ class CustomMonthPicker extends StatelessWidget {
           Container(
             child: IconButton(
               icon: Icon(Icons.keyboard_arrow_left),
-              iconSize: 25,
+              iconSize: 34,
+              color: Colors.white,
               onPressed: onDecrease,
             ),
           ),
           Container(
             child: Text(
               _buildMonthLabel(selectedMonth),
-              style: TextStyle(fontSize: 18),
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.white,
+              ),
             ),
           ),
           Container(
             child: IconButton(
               icon: Icon(Icons.keyboard_arrow_right),
-              iconSize: 25,
+              iconSize: 34,
+              color: Colors.white,
               onPressed: onIncrease,
             ),
           )
