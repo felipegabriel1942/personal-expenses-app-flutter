@@ -12,13 +12,13 @@ mixin _$ExpensesStore on _ExpensesStoreBase, Store {
   final _$expensesListAtom = Atom(name: '_ExpensesStoreBase.expensesList');
 
   @override
-  List<Expense> get expensesList {
+  ObservableList<Expense> get expensesList {
     _$expensesListAtom.reportRead();
     return super.expensesList;
   }
 
   @override
-  set expensesList(List<Expense> value) {
+  set expensesList(ObservableList<Expense> value) {
     _$expensesListAtom.reportWrite(value, super.expensesList, () {
       super.expensesList = value;
     });
@@ -67,6 +67,20 @@ mixin _$ExpensesStore on _ExpensesStoreBase, Store {
     _$selectedMonthAtom.reportWrite(value, super.selectedMonth, () {
       super.selectedMonth = value;
     });
+  }
+
+  final _$_ExpensesStoreBaseActionController =
+      ActionController(name: '_ExpensesStoreBase');
+
+  @override
+  void setSelectedMonth(DateTime value) {
+    final _$actionInfo = _$_ExpensesStoreBaseActionController.startAction(
+        name: '_ExpensesStoreBase.setSelectedMonth');
+    try {
+      return super.setSelectedMonth(value);
+    } finally {
+      _$_ExpensesStoreBaseActionController.endAction(_$actionInfo);
+    }
   }
 
   @override

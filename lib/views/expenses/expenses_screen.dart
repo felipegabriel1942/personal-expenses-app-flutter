@@ -7,8 +7,14 @@ import 'package:personal_expenses_app/stores/expenses/expenses_store.dart';
 import 'package:personal_expenses_app/utils/app_routes.dart';
 import 'package:personal_expenses_app/views/expenses/components/expense_list_item.dart';
 
-class ExpensesScreen extends StatelessWidget {
+class ExpensesScreen extends StatefulWidget {
+  @override
+  _ExpensesScreenState createState() => _ExpensesScreenState();
+}
+
+class _ExpensesScreenState extends State<ExpensesScreen> {
   final store = ExpensesStore();
+
   final expensesRepository = ExpensesRepository();
 
   @override
@@ -34,23 +40,27 @@ class ExpensesScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                CustomMonthPicker(),
                 Observer(builder: (_) {
-                  return Text(store.selectedMonth.toIso8601String());
+                  return CustomMonthPicker(
+                    onDecrease: store.isBusy ? null : store.decreaseMonth,
+                    onIncrease: store.isBusy ? null : store.increaseMonth,
+                    selectedMonth: store.selectedMonth,
+                  );
                 }),
                 Observer(
                   builder: (_) {
-                    return store.isBusy
-                        ? Center(
-                            child: CircularProgressIndicator(),
-                          )
-                        : Container(
-                            width: double.infinity,
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 10,
-                              vertical: 15,
-                            ),
-                            child: Text(
+                    return Container(
+                      width: double.infinity,
+                      height: 70,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 15,
+                      ),
+                      child: store.isBusy
+                          ? Center(
+                              child: CircularProgressIndicator(),
+                            )
+                          : Text(
                               'R\$ ${store.totalValue.toStringAsFixed(2)}',
                               textAlign: TextAlign.center,
                               style: TextStyle(
@@ -58,35 +68,30 @@ class ExpensesScreen extends StatelessWidget {
                                 color: Colors.black,
                               ),
                             ),
-                          );
+                    );
                   },
                 ),
               ],
             ),
           ),
-          Container(
-            height: _availableHeight * 0.75,
-            padding: const EdgeInsets.only(bottom: 15),
-            child: FutureBuilder(
-              future: store.loadExpenses(),
-              builder: (context, snapshot) {
-                if (store.isBusy) {
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-                } else {
-                  return ListView.builder(
-                    itemCount: store.expensesList.length,
-                    itemBuilder: (context, index) {
-                      return ExpenseListItem(
-                        expense: store.expensesList[index],
-                      );
-                    },
-                  );
-                }
-              },
-            ),
-          ),
+          Observer(builder: (_) {
+            return Container(
+              height: _availableHeight * 0.75,
+              padding: const EdgeInsets.only(bottom: 15),
+              child: store.isBusy
+                  ? Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : ListView.builder(
+                      itemCount: store.expensesList.length,
+                      itemBuilder: (_, index) {
+                        return ExpenseListItem(
+                          expense: store.expensesList[index],
+                        );
+                      },
+                    ),
+            );
+          }),
         ],
       ),
       drawer: AppDrawer(),

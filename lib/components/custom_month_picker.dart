@@ -1,22 +1,65 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:jiffy/jiffy.dart';
-
-import 'package:personal_expenses_app/stores/components/custom_month_picker.store.dart';
 
 class CustomMonthPicker extends StatelessWidget {
-  final store = CustomMonthPickerStore();
+  final Function onIncrease;
+  final Function onDecrease;
+  final DateTime selectedMonth;
 
-  CustomMonthPicker();
+  CustomMonthPicker({
+    @required this.onIncrease,
+    @required this.onDecrease,
+    @required this.selectedMonth,
+  });
 
-  _increaseMonth() {
-    store.setSelectedMonth(Jiffy(store.selectedMonth).add(months: 1));
-    print(store.selectedMonth);
-  }
+  _buildMonthLabel(DateTime date) {
 
-  _decreaseMonth() {
-    store.setSelectedMonth(Jiffy(store.selectedMonth).subtract(months: 1));
-    print(store.selectedMonth);
+    if(date.month == 1) {
+      return 'Janeiro/${date.year}';
+    }
+
+    if(date.month == 2) {
+      return 'Fevereiro/${date.year}';
+    }
+
+    if(date.month == 3) {
+      return 'Março/${date.year}';
+    }
+
+    if(date.month == 4) {
+      return 'Abril/${date.year}';
+    }
+
+    if(date.month == 5) {
+      return 'Maio/${date.year}';
+    }
+
+    if(date.month == 6) {
+      return 'Junho/${date.year}';
+    }
+
+    if(date.month == 7) {
+      return 'Julho/${date.year}';
+    }
+
+    if(date.month == 8) {
+      return 'Agosto/${date.year}';
+    }
+
+    if(date.month == 9) {
+      return 'Setembro/${date.year}';
+    }   
+
+    if(date.month == 10) {
+      return 'Outubro/${date.year}';
+    }
+
+    if(date.month == 11) {
+      return 'Novembro/${date.year}';
+    }
+
+    if(date.month == 12) {
+      return 'Dezembro/${date.year}';
+    }
   }
 
   @override
@@ -29,22 +72,20 @@ class CustomMonthPicker extends StatelessWidget {
             child: IconButton(
               icon: Icon(Icons.keyboard_arrow_left),
               iconSize: 25,
-              onPressed: _decreaseMonth,
+              onPressed: onDecrease,
             ),
           ),
-          Observer(builder: (_) {
-            return Container(
-              child: Text(
-                store.selectedMonth.toIso8601String(),
-                style: TextStyle(fontSize: 18),
-              ),
-            );
-          }),
+          Container(
+            child: Text(
+              _buildMonthLabel(selectedMonth),
+              style: TextStyle(fontSize: 18),
+            ),
+          ),
           Container(
             child: IconButton(
               icon: Icon(Icons.keyboard_arrow_right),
               iconSize: 25,
-              onPressed: _increaseMonth,
+              onPressed: onIncrease,
             ),
           )
         ],
