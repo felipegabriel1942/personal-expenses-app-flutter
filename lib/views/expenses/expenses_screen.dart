@@ -39,11 +39,11 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
         backgroundColor: Colors.red[400],
         elevation: 0,
       ),
-      backgroundColor: Colors.red[400],
       body: SingleChildScrollView(
         child: Column(
           children: [
             Container(
+              decoration: BoxDecoration(color: Colors.red[400]),
               height: _availableHeight * 0.08,
               child: Observer(builder: (_) {
                 return CustomMonthPicker(
@@ -53,36 +53,44 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
                 );
               }),
             ),
-            // Observer(
-            //   builder: (_) {
-            //     return Container(
-            //       decoration: BoxDecoration(color: Colors.white),
-            //       width: double.infinity,
-            //       height: 60,
-            //       padding: const EdgeInsets.symmetric(
-            //         horizontal: 10,
-            //         vertical: 15,
-            //       ),
-            //       child: store.isBusy
-            //           ? Center(
-            //               child: CircularProgressIndicator(),
-            //             )
-            //           : CurrencyText(
-            //               value: store.totalValue,
-            //               fontSize: 18,
-            //               color: Colors.amber,
-            //             ),
-            //     );
-            //   },
-            // ),
+            Container(
+              height: _availableHeight * 0.14,
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 6),
+              child: Card(
+                  elevation: 6,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: Text(
+                          'Total',
+                          style: TextStyle(fontSize: 15),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Observer(
+                          builder: (_) {
+                            return store.isBusy
+                                ? Center(
+                                    child: CircularProgressIndicator(),
+                                  )
+                                : CurrencyText(
+                                    value: store.totalValue,
+                                    fontSize: 15,
+                                  );
+                          },
+                        ),
+                      ),
+                    ],
+                  )),
+            ),
             Observer(
               builder: (_) {
                 return Container(
-                  height: _availableHeight * 0.85,
-                  padding: const EdgeInsets.only(
-                    top: 15,
-                    bottom: 15,
-                  ),
+                  height: _availableHeight * 0.68,
                   decoration: BoxDecoration(color: Colors.white),
                   child: store.isBusy
                       ? Center(
@@ -99,29 +107,10 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
                 );
               },
             ),
-            Observer(
-              builder: (_) {
-                return Container(
-                  // decoration: BoxDecoration(color: Colors.white),
-                  // width: double.infinity,
-                  height: _availableHeight * 0.07,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 15,
-                  ),
-                  alignment: Alignment.centerLeft,
-                  child: store.isBusy
-                      ? Center(
-                          child: CircularProgressIndicator(),
-                        )
-                      : CurrencyText(
-                          value: store.totalValue,
-                          fontSize: 16,
-                          color: Colors.white,
-                          prefixText: 'Total:',
-                        ),
-                );
-              },
-            ),
+            Container(
+              decoration: BoxDecoration(color: Colors.white),
+              height: _availableHeight * 0.13,
+            )
           ],
         ),
       ),

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:personal_expenses_app/components/currency_text.dart';
 import 'package:personal_expenses_app/models/expense.dart';
 
 class ExpenseListItem extends StatelessWidget {
@@ -52,7 +51,7 @@ class ExpenseListItem extends StatelessWidget {
           ],
         ),
         subtitle: Text(
-          '${expense.categorie} | ${DateFormat('dd/MM/yyyy').format(expense.date)}',
+          '${DateFormat('dd/MM/yyyy').format(expense.date)}',
         ),
       ),
     );

@@ -72,16 +72,10 @@ class _ExpensesFormScreenState extends State<ExpensesFormScreen> {
                       Observer(
                         builder: (_) {
                           return Container(
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 10,
-                            ),
                             child: TextFormField(
                               autovalidate: store.autovalidate,
                               decoration: InputDecoration(
                                 labelText: 'Descrição',
-                                prefixIcon: Icon(
-                                  Icons.edit,
-                                ),
                               ),
                               validator: store.descriptionValidation,
                               onChanged: store.setDescription,
@@ -92,17 +86,11 @@ class _ExpensesFormScreenState extends State<ExpensesFormScreen> {
                       Observer(
                         builder: (_) {
                           return Container(
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 10,
-                            ),
                             child: TextFormField(
                               autovalidate: store.autovalidate,
                               decoration: InputDecoration(
-                                labelText: 'Valor',
+                                labelText: 'Valor (R\$)',
                                 fillColor: Colors.white,
-                                prefixIcon: Icon(
-                                  Icons.monetization_on,
-                                ),
                               ),
                               keyboardType: TextInputType.number,
                               validator: store.expenseValueValidation,
@@ -116,11 +104,7 @@ class _ExpensesFormScreenState extends State<ExpensesFormScreen> {
                           final format = new DateFormat(
                             'dd/MM/yyyy',
                           );
-
                           return Container(
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 10,
-                            ),
                             child: TextFormField(
                               autovalidate: store.autovalidate,
                               controller: TextEditingController(
@@ -131,9 +115,6 @@ class _ExpensesFormScreenState extends State<ExpensesFormScreen> {
                               decoration: InputDecoration(
                                 labelText: 'Data',
                                 fillColor: Colors.white,
-                                prefixIcon: Icon(
-                                  Icons.date_range,
-                                ),
                               ),
                               onTap: _showDatePicker,
                               keyboardType: TextInputType.datetime,
@@ -149,18 +130,12 @@ class _ExpensesFormScreenState extends State<ExpensesFormScreen> {
                       Observer(
                         builder: (_) {
                           return Container(
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 6,
-                            ),
                             child: DropdownButtonFormField(
                               isExpanded: true,
                               autovalidate: store.autovalidate,
                               decoration: InputDecoration(
                                 labelText: 'Categoria',
                                 fillColor: Colors.white,
-                                prefixIcon: Icon(
-                                  Icons.list,
-                                ),
                               ),
                               validator: store.categorieValidation,
                               items: [
@@ -177,16 +152,10 @@ class _ExpensesFormScreenState extends State<ExpensesFormScreen> {
                         },
                       ),
                       Container(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 10,
-                        ),
                         child: TextFormField(
                           maxLines: 3,
                           decoration: InputDecoration(
                             labelText: 'Observação',
-                            prefixIcon: Icon(
-                              Icons.text_fields,
-                            ),
                           ),
                           onChanged: store.setObservation,
                         ),
