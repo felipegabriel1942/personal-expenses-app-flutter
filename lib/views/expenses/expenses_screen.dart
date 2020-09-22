@@ -140,9 +140,10 @@ class TotalExpenseInformative extends StatelessWidget {
               Text(
                 'Total',
                 style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.grey),
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.grey,
+                ),
               ),
             ],
           ),
@@ -181,31 +182,38 @@ class ExpensesList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Observer(builder: (_) {
-      return Container(
-        height: _availableHeight * 0.82,
-        padding: const EdgeInsets.only(bottom: 45, top: 10),
-        decoration: BoxDecoration(color: Colors.white),
-        child: store.isBusy
-            ? Center(
-                child: CircularProgressIndicator(),
-              )
-            : store.expensesList.length == 0
-                ? EmptyListSignal()
-                : ListView.builder(
-                    itemCount: store.expensesList.length,
-                    itemBuilder: (_, index) {
-                      return ExpenseListItem(
-                        expense: store.expensesList[index],
-                      );
-                    },
-                  ),
-      );
-    });
+    return Observer(
+      builder: (_) {
+        return Container(
+          height: _availableHeight * 0.82,
+          padding: const EdgeInsets.only(
+            bottom: 45,
+            top: 10,
+          ),
+          decoration: BoxDecoration(
+            color: Colors.white,
+          ),
+          child: store.isBusy
+              ? Center(
+                  child: CircularProgressIndicator(),
+                )
+              : store.expensesList.length == 0
+                  ? EmptyListImage()
+                  : ListView.builder(
+                      itemCount: store.expensesList.length,
+                      itemBuilder: (_, index) {
+                        return ExpenseListItem(
+                          expense: store.expensesList[index],
+                        );
+                      },
+                    ),
+        );
+      },
+    );
   }
 }
 
-class EmptyListSignal extends StatelessWidget {
+class EmptyListImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
