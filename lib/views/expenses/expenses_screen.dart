@@ -42,74 +42,23 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Container(
-              decoration: BoxDecoration(color: Colors.red[400]),
-              height: _availableHeight * 0.08,
-              child: Observer(builder: (_) {
-                return CustomMonthPicker(
-                  onDecrease: store.isBusy ? null : store.decreaseMonth,
-                  onIncrease: store.isBusy ? null : store.increaseMonth,
-                  selectedMonth: store.selectedMonth,
-                );
-              }),
+            MonthSelector(
+              availableHeight: _availableHeight,
+              store: store,
             ),
-            Container(
-              height: _availableHeight * 0.14,
-              width: double.infinity,
-              padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 6),
-              child: Card(
-                  elevation: 6,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(15.0),
-                        child: Text(
-                          'Total',
-                          style: TextStyle(fontSize: 15),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Observer(
-                          builder: (_) {
-                            return store.isBusy
-                                ? Center(
-                                    child: CircularProgressIndicator(),
-                                  )
-                                : CurrencyText(
-                                    value: store.totalValue,
-                                    fontSize: 15,
-                                  );
-                          },
-                        ),
-                      ),
-                    ],
-                  )),
+            TotalExpenseInformative(
+              availableHeight: _availableHeight,
+              store: store,
             ),
-            Observer(
-              builder: (_) {
-                return Container(
-                  height: _availableHeight * 0.68,
-                  decoration: BoxDecoration(color: Colors.white),
-                  child: store.isBusy
-                      ? Center(
-                          child: CircularProgressIndicator(),
-                        )
-                      : ListView.builder(
-                          itemCount: store.expensesList.length,
-                          itemBuilder: (_, index) {
-                            return ExpenseListItem(
-                              expense: store.expensesList[index],
-                            );
-                          },
-                        ),
-                );
-              },
+            Divider(
+              height: 0,
+              thickness: 2,
+              indent: 15,
+              endIndent: 15,
             ),
-            Container(
-              decoration: BoxDecoration(color: Colors.white),
-              height: _availableHeight * 0.13,
+            ExpensesList(
+              availableHeight: _availableHeight,
+              store: store,
             )
           ],
         ),
@@ -125,6 +74,152 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
           Navigator.of(context).pushNamed(AppRoutes.EXPENSES_FORM);
         },
       ),
+    );
+  }
+}
+
+class MonthSelector extends StatelessWidget {
+  const MonthSelector({
+    Key key,
+    @required double availableHeight,
+    @required this.store,
+  })  : _availableHeight = availableHeight,
+        super(key: key);
+
+  final double _availableHeight;
+  final ExpensesStore store;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.red[400],
+      ),
+      height: _availableHeight * 0.08,
+      child: Observer(builder: (_) {
+        return CustomMonthPicker(
+          onDecrease: store.isBusy ? null : store.decreaseMonth,
+          onIncrease: store.isBusy ? null : store.increaseMonth,
+          selectedMonth: store.selectedMonth,
+        );
+      }),
+    );
+  }
+}
+
+class TotalExpenseInformative extends StatelessWidget {
+  const TotalExpenseInformative({
+    Key key,
+    @required double availableHeight,
+    @required this.store,
+  })  : _availableHeight = availableHeight,
+        super(key: key);
+
+  final double _availableHeight;
+  final ExpensesStore store;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: _availableHeight * 0.10,
+      width: double.infinity,
+      decoration: BoxDecoration(color: Colors.white),
+      padding: const EdgeInsets.symmetric(horizontal: 13),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: Icon(
+                  Icons.account_balance_wallet,
+                  color: Colors.grey,
+                ),
+              ),
+              Text(
+                'Total',
+                style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey),
+              ),
+            ],
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Observer(
+              builder: (_) {
+                return store.isBusy
+                    ? Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : CurrencyText(
+                        value: store.totalValue,
+                        fontSize: 16,
+                        color: Colors.grey[700],
+                      );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class ExpensesList extends StatelessWidget {
+  const ExpensesList({
+    Key key,
+    @required double availableHeight,
+    @required this.store,
+  })  : _availableHeight = availableHeight,
+        super(key: key);
+
+  final double _availableHeight;
+  final ExpensesStore store;
+
+  @override
+  Widget build(BuildContext context) {
+    return Observer(builder: (_) {
+      return Container(
+        height: _availableHeight * 0.82,
+        padding: const EdgeInsets.only(bottom: 45, top: 10),
+        decoration: BoxDecoration(color: Colors.white),
+        child: store.isBusy
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : store.expensesList.length == 0
+                ? EmptyListSignal()
+                : ListView.builder(
+                    itemCount: store.expensesList.length,
+                    itemBuilder: (_, index) {
+                      return ExpenseListItem(
+                        expense: store.expensesList[index],
+                      );
+                    },
+                  ),
+      );
+    });
+  }
+}
+
+class EmptyListSignal extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          'Nenhuma despesa encontrada!',
+          style: TextStyle(
+            fontSize: 20,
+            color: Colors.grey[500],
+          ),
+        ),
+        Image.asset('assets/images/empty-list.png')
+      ],
     );
   }
 }
