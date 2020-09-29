@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:personal_expenses_app/components/app_drawer.dart';
-import 'package:personal_expenses_app/components/currency_text.dart';
 import 'package:personal_expenses_app/components/custom_month_picker.dart';
 import 'package:personal_expenses_app/repositories/expenses_repository.dart';
 import 'package:personal_expenses_app/stores/expenses/expenses_store.dart';
+import 'package:personal_expenses_app/utils/app_format_utils.dart';
 import 'package:personal_expenses_app/utils/app_routes.dart';
 import 'package:personal_expenses_app/views/expenses/components/expense_list_item.dart';
 
@@ -49,12 +49,6 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
             TotalExpenseInformative(
               availableHeight: _availableHeight,
               store: store,
-            ),
-            Divider(
-              height: 0,
-              thickness: 2,
-              indent: 15,
-              endIndent: 15,
             ),
             ExpensesList(
               availableHeight: _availableHeight,
@@ -121,49 +115,54 @@ class TotalExpenseInformative extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: _availableHeight * 0.10,
+      height: _availableHeight * 0.14,
       width: double.infinity,
-      decoration: BoxDecoration(color: Colors.white),
-      padding: const EdgeInsets.symmetric(horizontal: 13),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(10),
-                child: Icon(
-                  Icons.account_balance_wallet,
-                  color: Colors.grey,
+      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+      child: Card(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(15),
+                  child: Icon(
+                    Icons.account_balance_wallet,
+                    color: Colors.grey,
+                  ),
                 ),
-              ),
-              Text(
-                'Total',
-                style: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.grey,
+                Text(
+                  'Total',
+                  style: TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey,
+                  ),
                 ),
-              ),
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Observer(
-              builder: (_) {
-                return store.isBusy
-                    ? Center(
-                        child: CircularProgressIndicator(),
-                      )
-                    : CurrencyText(
-                        value: store.totalValue,
-                        fontSize: 16,
-                        color: Colors.grey[700],
-                      );
-              },
+              ],
             ),
-          ),
-        ],
+            Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Observer(
+                builder: (_) {
+                  return store.isBusy
+                      ? Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : Text(
+                          AppFormatUtils.toCurrencyString(
+                            value: store.totalValue,
+                          ),
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.grey[700],
+                          ),
+                        );
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -185,13 +184,10 @@ class ExpensesList extends StatelessWidget {
     return Observer(
       builder: (_) {
         return Container(
-          height: _availableHeight * 0.82,
+          height: _availableHeight * 0.78,
           padding: const EdgeInsets.only(
             bottom: 45,
             top: 10,
-          ),
-          decoration: BoxDecoration(
-            color: Colors.white,
           ),
           child: store.isBusy
               ? Center(
@@ -201,11 +197,14 @@ class ExpensesList extends StatelessWidget {
                   ? EmptyListImage()
                   : ListView.builder(
                       itemCount: store.expensesList.length,
-                      itemBuilder: (_, index) {
-                        return ExpenseListItem(
-                          expense: store.expensesList[index],
-                        );
-                      },
+                      itemBuilder: (_, index) => Column(
+                        children: [
+                          ExpenseListItem(
+                            expense: store.expensesList[index],
+                          ),
+                          Divider(),
+                        ],
+                      ),
                     ),
         );
       },

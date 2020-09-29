@@ -34,7 +34,6 @@ abstract class _ExpensesStoreBase with Store {
     this.loadExpenses();
   }
 
-
   Future<void> loadExpenses() async {
     try {
       isBusy = true;
