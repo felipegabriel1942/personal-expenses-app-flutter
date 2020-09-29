@@ -12,15 +12,30 @@ mixin _$ExpensesStore on _ExpensesStoreBase, Store {
   final _$expensesListAtom = Atom(name: '_ExpensesStoreBase.expensesList');
 
   @override
-  List<Expense> get expensesList {
+  ObservableList<Expense> get expensesList {
     _$expensesListAtom.reportRead();
     return super.expensesList;
   }
 
   @override
-  set expensesList(List<Expense> value) {
+  set expensesList(ObservableList<Expense> value) {
     _$expensesListAtom.reportWrite(value, super.expensesList, () {
       super.expensesList = value;
+    });
+  }
+
+  final _$totalValueAtom = Atom(name: '_ExpensesStoreBase.totalValue');
+
+  @override
+  double get totalValue {
+    _$totalValueAtom.reportRead();
+    return super.totalValue;
+  }
+
+  @override
+  set totalValue(double value) {
+    _$totalValueAtom.reportWrite(value, super.totalValue, () {
+      super.totalValue = value;
     });
   }
 
@@ -39,11 +54,42 @@ mixin _$ExpensesStore on _ExpensesStoreBase, Store {
     });
   }
 
+  final _$selectedMonthAtom = Atom(name: '_ExpensesStoreBase.selectedMonth');
+
+  @override
+  DateTime get selectedMonth {
+    _$selectedMonthAtom.reportRead();
+    return super.selectedMonth;
+  }
+
+  @override
+  set selectedMonth(DateTime value) {
+    _$selectedMonthAtom.reportWrite(value, super.selectedMonth, () {
+      super.selectedMonth = value;
+    });
+  }
+
+  final _$_ExpensesStoreBaseActionController =
+      ActionController(name: '_ExpensesStoreBase');
+
+  @override
+  void setSelectedMonth(DateTime value) {
+    final _$actionInfo = _$_ExpensesStoreBaseActionController.startAction(
+        name: '_ExpensesStoreBase.setSelectedMonth');
+    try {
+      return super.setSelectedMonth(value);
+    } finally {
+      _$_ExpensesStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
   @override
   String toString() {
     return '''
 expensesList: ${expensesList},
-isBusy: ${isBusy}
+totalValue: ${totalValue},
+isBusy: ${isBusy},
+selectedMonth: ${selectedMonth}
     ''';
   }
 }
