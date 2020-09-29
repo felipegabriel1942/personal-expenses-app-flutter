@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:personal_expenses_app/models/Expense.dart';
 import 'package:personal_expenses_app/utils/app_keys.dart';
@@ -36,16 +37,32 @@ class ExpensesRepository {
     }
 
     List<Expense> expensesList = [];
-    print(data);
+
     try {
       data.forEach((expenseId, expenseData) {
-        print(expenseData);
-        expensesList.add(Expense.fromMap(expenseData));
+        expensesList.add(
+          Expense.fromMap(
+            expenseData,
+          ),
+        );
       });
     } catch (e) {
       print(e);
     }
 
     return Future.value(expensesList);
+  }
+
+  Future<void> deleteExpenses(String id) async {
+    Map<String, dynamic> userData = await AppStore.getMap('userData');
+    String token = userData['token'];
+    String userId = userData['userId'];
+
+    final response =
+        await http.delete('$_baseUrl/$userId/$id.json?auth=$token');
+
+    if(response.statusCode >= 400) {
+      throw HttpException('Ocorreu um erro na exclusão do produto.');
+    }
   }
 }

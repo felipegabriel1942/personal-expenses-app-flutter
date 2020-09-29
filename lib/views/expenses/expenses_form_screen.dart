@@ -72,23 +72,10 @@ class _ExpensesFormScreenState extends State<ExpensesFormScreen> {
                       Observer(
                         builder: (_) {
                           return Container(
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 10,
-                            ),
                             child: TextFormField(
                               autovalidate: store.autovalidate,
                               decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(10),
-                                  ),
-                                ),
                                 labelText: 'Descrição',
-                                filled: true,
-                                fillColor: Colors.white,
-                                prefixIcon: Icon(
-                                  Icons.edit,
-                                ),
                               ),
                               validator: store.descriptionValidation,
                               onChanged: store.setDescription,
@@ -96,124 +83,81 @@ class _ExpensesFormScreenState extends State<ExpensesFormScreen> {
                           );
                         },
                       ),
-                      Observer(builder: (_) {
-                        return Container(
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 10,
-                          ),
-                          child: TextFormField(
-                            autovalidate: store.autovalidate,
-                            decoration: InputDecoration(
-                              labelText: 'Valor',
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(10),
-                                ),
+                      Observer(
+                        builder: (_) {
+                          return Container(
+                            child: TextFormField(
+                              autovalidate: store.autovalidate,
+                              decoration: InputDecoration(
+                                labelText: 'Valor (R\$)',
+                                fillColor: Colors.white,
                               ),
-                              filled: true,
-                              fillColor: Colors.white,
-                              prefixIcon: Icon(
-                                Icons.monetization_on,
-                              ),
+                              keyboardType: TextInputType.number,
+                              validator: store.expenseValueValidation,
+                              onChanged: store.setExpenseValue,
                             ),
-                            keyboardType: TextInputType.number,
-                            validator: store.expenseValueValidation,
-                            onChanged: store.setExpenseValue,
-                          ),
-                        );
-                      }),
-                      Observer(builder: (_) {
-                        final format = new DateFormat(
-                          'dd/MM/yyyy',
-                        );
-
-                        return Container(
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 10,
-                          ),
-                          child: TextFormField(
-                            autovalidate: store.autovalidate,
-                            controller: TextEditingController(
-                              text: store.isDateValid
-                                  ? format.format(store.date)
-                                  : null,
+                          );
+                        },
+                      ),
+                      Observer(
+                        builder: (_) {
+                          final format = new DateFormat(
+                            'dd/MM/yyyy',
+                          );
+                          return Container(
+                            child: TextFormField(
+                              autovalidate: store.autovalidate,
+                              controller: TextEditingController(
+                                text: store.isDateValid
+                                    ? format.format(store.date)
+                                    : null,
+                              ),
+                              decoration: InputDecoration(
+                                labelText: 'Data',
+                                fillColor: Colors.white,
+                              ),
+                              onTap: _showDatePicker,
+                              keyboardType: TextInputType.datetime,
+                              validator: store.dateValidation,
+                              inputFormatters: [
+                                FilteringTextInputFormatter.digitsOnly,
+                                DataInputFormatter()
+                              ],
                             ),
-                            decoration: InputDecoration(
-                              labelText: 'Data',
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(10),
-                                ),
+                          );
+                        },
+                      ),
+                      Observer(
+                        builder: (_) {
+                          return Container(
+                            child: DropdownButtonFormField(
+                              isExpanded: true,
+                              autovalidate: store.autovalidate,
+                              decoration: InputDecoration(
+                                labelText: 'Categoria',
+                                fillColor: Colors.white,
                               ),
-                              filled: true,
-                              fillColor: Colors.white,
-                              prefixIcon: Icon(
-                                Icons.date_range,
-                              ),
+                              validator: store.categorieValidation,
+                              items: [
+                                DropdownMenuItem(
+                                  child: Text(
+                                    'Alimentação',
+                                  ),
+                                  value: 'alimentacao',
+                                )
+                              ],
+                              onChanged: store.setCategorie,
                             ),
-                            onTap: _showDatePicker,
-                            keyboardType: TextInputType.datetime,
-                            validator: store.dateValidation,
-                            inputFormatters: [
-                              FilteringTextInputFormatter.digitsOnly,
-                              DataInputFormatter()
-                            ],
-                          ),
-                        );
-                      }),
-                      Observer(builder: (_) {
-                        return Container(
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 10,
-                          ),
-                          child: DropdownButtonFormField(
-                            isExpanded: true,
-                            autovalidate: store.autovalidate,
-                            decoration: InputDecoration(
-                              labelText: 'Categoria',
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(10),
-                                ),
-                              ),
-                              filled: true,
-                              fillColor: Colors.white,
-                              prefixIcon: Icon(
-                                Icons.list,
-                              ),
-                            ),
-                            validator: store.categorieValidation,
-                            items: [
-                              DropdownMenuItem(
-                                child: Text(
-                                  'Alimentação',
-                                ),
-                                value: 'alimentacao',
-                              )
-                            ],
-                            onChanged: store.setCategorie,
-                          ),
-                        );
-                      }),
+                          );
+                        },
+                      ),
                       Container(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 10,
-                        ),
                         child: TextFormField(
                           maxLines: 3,
                           decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(10),
-                              ),
-                            ),
                             labelText: 'Observação',
-                            filled: true,
-                            fillColor: Colors.white,
-                            prefixIcon: Icon(
-                              Icons.text_fields,
-                            ),
                           ),
+                          onChanged: store.setObservation,
                         ),
                       ),
                     ],
